@@ -59,3 +59,18 @@ input_tensor = np.expand_dims(input_tensor_reshaped, axis=0).astype(np.float32)
 # as indicated by the traceback's signature for the TFSMLayer object.
 output = model_layer(inputs=input_tensor)
 print(output)
+
+# Use tf.squeeze to remove the batch dimension, resulting in a 1D tensor
+# Then convert the tensor to a NumPy array using .numpy() to use standard Python/NumPy operations
+probs = tf.squeeze(output['output_1']).numpy()
+
+# Format and print
+labels = [
+    "PCWP > 15 mmHg",
+    "mPAP > 20 mmHg",
+    "PVR > 3 Wood Units",
+    "CO > 4 L/min"
+]
+
+for prob, label in zip(probs, labels):
+    print(f"A {prob * 100:.1f}% probability that {label}")
